@@ -1,0 +1,35 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project-specific
+.pytest_cache/
+htmlcov/
+.coverage
+.mlflow/
+mlruns/
+*.log
+
+# Streamlit cache
+.streamlit/
+
+# OS files
+.git/
+.gitignore

@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: .
+      target: runtime
+    container_name: dealml_backend
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PORT=8000
+    volumes:
+      - ./src:/app/src
+      - ./frontend:/app/frontend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: .
+      target: frontend
+    container_name: dealml_frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+      - STREAMLIT_SERVER_HEADLESS=true
+    volumes:
+      - ./src:/app/src
+      - ./frontend:/app/frontend
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped

@@ -35,7 +35,7 @@ class MarketDataPipeline:
             "52_week_low": info.get("fiftyTwoWeekLow", 0.0)
         }
 
-    def fetch_financial_statements(()) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    def fetch_financial_statements(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """Fetch balance sheet, income statement, and cash flow statement."""
         income_stmt = self.stock.financials
         balance_sheet = self.stock.balance_sheet
@@ -43,7 +43,7 @@ class MarketDataPipeline:
 
         return income_stmt, balance_sheet, cash_flow
 
-    def extract_dcf_inputs(()) -> Dict[str, Any]:
+    def extract_dcf_inputs(self) -> Dict[str, Any]:
         """Extract baseline cash flows, debt, and cash balances for DCF calculation."""
         info = self.fetch_company_info()
         cash_flow = self.stock.cashflow
@@ -77,7 +77,7 @@ class MarketDataPipeline:
             "current_price": info.get("currentPrice", 0.0)
         }
 
-    def generate_ml_features((self, years: str = "5y") -> pd.DataFrame:
+    def generate_ml_features(self, years: str = "5y") -> pd.DataFrame:
         """Create structured tabular dataset for ML predictive modeling."""
         history = self.stock.history(period=years)
         if history.empty:

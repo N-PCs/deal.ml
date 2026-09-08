@@ -110,18 +110,51 @@ flowchart TD
 - Docker & Docker Compose (Optional for containerized run)
 
 ### Running Locally with Python
+
+#### 1. Clone / Navigate to workspace
 ```bash
-# 1. Clone/Navigate to workspace
 cd deal.ml
+```
 
-# 2. Install dependencies
+#### 2. Install Dependencies
+
+You can install dependencies using either **`uv`** (ultra-fast, recommended) or traditional **`pip`**:
+
+##### Option A: Using `uv` (Recommended - 10-100x faster)
+```bash
+# Create and activate virtual environment
+uv venv
+source .venv/bin/activate    # On Windows: .venv\Scripts\activate
+
+# Install all dependencies with uv pip
+uv pip install -r requirements.txt
+```
+
+##### Option B: Using Standard `pip`
+```bash
+# Create and activate virtual environment
+python3 -m venv venv
+source venv/bin/activate     # On Windows: venv\Scripts\activate
+
+# Install dependencies with standard pip
 pip install -r requirements.txt
+```
 
-# 3. Launch FastAPI Backend (Terminal 1)
+#### 3. Launch Services
+
+##### Terminal 1: Launch FastAPI Backend
+```bash
 uvicorn src.backend.main:app --host 0.0.0.0 --port 8000 --reload
+```
 
-# 4. Launch Streamlit Financial Terminal (Terminal 2)
+##### Terminal 2: Launch Streamlit Financial Terminal
+```bash
 streamlit run frontend/app.py
+```
+
+##### Optional: Run Verification & Benchmarks
+```bash
+python benchmark.py
 ```
 
 ### Running with Docker Compose (Modern Docker CLI v2)

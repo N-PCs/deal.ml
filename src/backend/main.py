@@ -37,32 +37,32 @@ retriever = FinancialHybridRetriever()
 # --- Request / Response Models ---
 
 class DCFRequest(BaseModel):
-    free_cash_flows: List[float] = Field(..., example=[1000.0, 1150.0, 1300.0, 1450.0])
-    wacc: float = Field(0.085, example=0.085)
-    terminal_growth_rate: float = Field(0.025, example=0.025)
-    net_debt: float = Field(500.0, example=500.0)
-    shares_outstanding: float = Field(100.0, example=100.0)
-    exit_multiple: Optional[float] = Field(None, example=12.5)
-    last_ev_ebitda: Optional[float] = Field(None, example=2000.0)
+    free_cash_flows: List[float] = Field(..., examples=[[1000.0, 1150.0, 1300.0, 1450.0]])
+    wacc: float = Field(0.085, examples=[0.085])
+    terminal_growth_rate: float = Field(0.025, examples=[0.025])
+    net_debt: float = Field(500.0, examples=[500.0])
+    shares_outstanding: float = Field(100.0, examples=[100.0])
+    exit_multiple: Optional[float] = Field(None, examples=[12.5])
+    last_ev_ebitda: Optional[float] = Field(None, examples=[2000.0])
 
 class MergerSimulationRequest(BaseModel):
-    acq_net_income: float = Field(..., example=5000.0)
-    tgt_net_income: float = Field(..., example=1200.0)
-    acq_shares: float = Field(..., example=500.0)
-    tgt_shares: float = Field(..., example=150.0)
-    acq_share_price: float = Field(..., example=120.0)
-    tgt_share_price: float = Field(..., example=45.0)
-    offer_premium_pct: float = Field(0.25, example=0.25)
-    pre_tax_synergies: float = Field(300.0, example=300.0)
-    cash_pct: float = Field(0.5, example=0.5)
-    stock_pct: float = Field(0.5, example=0.5)
+    acq_net_income: float = Field(..., examples=[5000.0])
+    tgt_net_income: float = Field(..., examples=[1200.0])
+    acq_shares: float = Field(..., examples=[500.0])
+    tgt_shares: float = Field(..., examples=[150.0])
+    acq_share_price: float = Field(..., examples=[120.0])
+    tgt_share_price: float = Field(..., examples=[45.0])
+    offer_premium_pct: float = Field(0.25, examples=[0.25])
+    pre_tax_synergies: float = Field(300.0, examples=[300.0])
+    cash_pct: float = Field(0.5, examples=[0.5])
+    stock_pct: float = Field(0.5, examples=[0.5])
 
 class RAGQueryRequest(BaseModel):
-    query: str = Field(..., example="What are the key operational risk factors reported by the target?")
-    top_k: int = Field(5, example=5)
+    query: str = Field(..., examples=["What are the key operational risk factors reported by the target?"])
+    top_k: int = Field(5, examples=[5])
 
 class IngestSampleDataRequest(BaseModel):
-    ticker: str = Field(..., example="AAPL")
+    ticker: str = Field(..., examples=["AAPL"])
 
 # --- Routes ---
 

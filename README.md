@@ -21,6 +21,8 @@ Investment bankers at top-tier financial institutions evaluate corporate acquisi
 
 **`deal.ml`** solves this by uniting **Agentic Hybrid RAG** (for text and SEC table extraction) with a **Deterministic Python Mathematical Engine** (for zero-hallucination DCF, WACC, and M&A Accretion/Dilution models) and an **XGBoost Machine Learning Forecaster** (for predicting forward growth and margin trajectory based on peer market data).
 
+> 📘 **Looking for definitions?** Check out [DEFINITIONS.md](DEFINITIONS.md) for a complete glossary of all financial modeling terms (DCF, WACC, EV), M&A deal concepts (Accretion/Dilution), and AI/RAG architectures, accompanied by high-resolution visual infographics.
+
 ---
 
 ## System Architecture & Workflow

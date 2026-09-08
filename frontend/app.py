@@ -8,6 +8,12 @@ import plotly.graph_objects as go
 import plotly.express as px
 import pandas as pd
 import requests
+from pathlib import Path
+
+# Resolve assets directory
+ASSETS_DIR = Path(__file__).resolve().parent.parent / "assets"
+if not ASSETS_DIR.exists():
+    ASSETS_DIR = Path("assets")
 
 # Page Config
 st.set_page_config(
@@ -31,6 +37,13 @@ st.markdown("""
     }
     .accretive { color: #10b981; font-weight: bold; }
     .dilutive { color: #ef4444; font-weight: bold; }
+    .term-box {
+        background-color: #1e293b;
+        border-left: 4px solid #38bdf8;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+        border-radius: 0 8px 8px 0;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -39,11 +52,12 @@ st.title("🏛️ deal.ml | Investment Banking AI & ML Desk")
 st.caption("Agentic RAG & Predictive ML System for Automated M&A Due Diligence, DCF Valuation & Merger Consequences")
 
 # Tabs Navigation
-tab_valuation, tab_merger, tab_rag, tab_ml = st.tabs([
+tab_valuation, tab_merger, tab_rag, tab_ml, tab_glossary = st.tabs([
     "📊 Valuation & Football Field", 
     "🤝 M&A Accretion / Dilution", 
     "🔍 Agentic RAG Due Diligence", 
-    "📈 Predictive ML Forecaster"
+    "📈 Predictive ML Forecaster",
+    "📖 Glossary & Financial Terms"
 ])
 
 # ---------------------------------------------------------
@@ -130,6 +144,18 @@ with tab_valuation:
         )
         st.plotly_chart(fig, use_container_width=True)
 
+        with st.expander("💡 Jargon Buster: Valuation & DCF Terms on this page explained"):
+            st.markdown("""
+            * **DCF (Discounted Cash Flow)**: An intrinsic valuation model calculating what a company is worth today based on future cash generation, independent of short-term market noise.
+            * **WACC (Weighted Average Cost of Capital)**: The minimum annual rate of return demanded by all capital providers (lenders + shareholders). Acts as the 'discount rate' translating future cash into today's dollars.
+            * **FCF (Free Cash Flow)**: The real spendable cash left over after paying all operating expenses, taxes, and capital investments (equipment, software, CapEx).
+            * **Terminal Value (TV)**: The estimated value of the company beyond the explicit 4-year forecast period, representing 65%–85% of total corporate value.
+            * **Gordon Growth Model**: Calculates Terminal Value assuming steady perpetual growth (e.g., 2.5%, anchored close to long-term GDP growth).
+            * **Exit Multiple Method**: Calculates Terminal Value assuming the company is acquired at an industry-standard EBITDA multiple (e.g., 12.5x).
+            * **Enterprise Value (EV) vs. Equity Value**: Enterprise Value is the value of the core business operations. Equity Value is what remains for common shareholders after deducting Net Debt (Debt minus Cash).
+            * **Football Field Chart**: A visual comparison of implied share prices across different valuation methods to establish a defensible deal range for negotiations.
+            """)
+
 # ---------------------------------------------------------
 # TAB 2: M&A ACCRETION / DILUTION SIMULATOR
 # ---------------------------------------------------------
@@ -200,6 +226,16 @@ with tab_merger:
         fig_eps.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', font=dict(color='#e2e8f0'), height=240)
         st.plotly_chart(fig_eps, use_container_width=True)
 
+        with st.expander("💡 Jargon Buster: M&A Deal Terms on this page explained"):
+            st.markdown("""
+            * **Accretive Deal (Green)**: The acquisition increases the acquirer's EPS (Earnings Per Share). Public markets usually reward accretive transactions with a higher stock valuation.
+            * **Dilutive Deal (Red)**: The acquisition reduces the acquirer's EPS, meaning earnings are spread across more shares or reduced by interest expense.
+            * **Pro-Forma EPS**: The projected combined earnings per share after factoring in the target's net income, deal financing costs, new shares issued, and post-tax synergies.
+            * **Offer Premium (%)**: The percentage above the target's current market share price offered by the buyer to incentivize target shareholders to vote in favor of the deal.
+            * **Synergies (Cost vs. Revenue)**: Financial benefits created by combining two companies. Cost synergies (eliminating redundant departments/software) are considered high-certainty, while revenue synergies (cross-selling) carry higher execution risk.
+            * **Financing Consideration (Cash vs. Stock)**: Paying with **Cash** incurs debt interest expense but does not dilute existing shares. Paying with **Stock** issues brand new shares, diluting ownership but preserving balance sheet liquidity.
+            """)
+
 # ---------------------------------------------------------
 # TAB 3: AGENTIC RAG DUE DILIGENCE WORKSPACE
 # ---------------------------------------------------------
@@ -232,6 +268,15 @@ with tab_rag:
             > *"Analyst Question: Can you speak to gross margin trajectory in FY26? Executive Answer: We expect synergistic efficiencies from our tech consolidation to offset short-term inflationary pressure."*
             """)
 
+    with st.expander("💡 Jargon Buster: Agentic RAG & SEC Filing Terms on this page explained"):
+        st.markdown("""
+        * **Agentic RAG (Retrieval-Augmented Generation)**: An AI architecture where the system autonomously searches authentic source documents (like SEC filings), verifies numbers, and formats answers with audit-proof citations to eliminate hallucinations.
+        * **SEC Form 10-K & 10-Q**: The legally binding audited annual (10-K) and quarterly (10-Q) financial reports filed by public corporations with the U.S. Securities and Exchange Commission.
+        * **Item 1A (Risk Factors)**: The mandated section of Form 10-K where corporate attorneys disclose significant operational, regulatory, cyber, market, and litigation risks facing the company.
+        * **Item 7 (MD&A)**: Management's Discussion and Analysis; the narrative section where executive leadership explains revenue trends, gross margins, liquidity, and future outlook.
+        * **Hybrid Retrieval (Dense Vectors + BM25)**: Dense Vector search understands conceptual meanings (e.g., 'lawsuits' matches 'legal proceedings'), while BM25 keyword search precisely matches specific ticker names, numbers, and exact accounting line items.
+        """)
+
 # ---------------------------------------------------------
 # TAB 4: PREDICTIVE ML FORECASTER
 # ---------------------------------------------------------
@@ -254,3 +299,220 @@ with tab_ml:
         st.metric("Predicted 1-Yr Forward Revenue Growth", f"{pred_growth*100:.2f}%")
         st.metric("Predicted Forward EBITDA Margin", f"{pred_ebitda*100:.2f}%")
         st.metric("Suggested DCF Terminal Growth Anchor", f"{min(max(pred_growth*0.25, 0.015), 0.035)*100:.2f}%")
+
+    with st.expander("💡 Jargon Buster: Machine Learning & Forecaster Terms on this page explained"):
+        st.markdown("""
+        * **XGBoost (Extreme Gradient Boosting)**: An industry-standard ensemble machine learning algorithm that builds a sequence of decision trees to accurately predict financial parameters based on peer patterns.
+        * **Revenue CAGR**: Compound Annual Growth Rate; the annualized revenue growth rate over past years, smoothing out year-to-year spikes.
+        * **30-Day Volatility**: The annualized percentage standard deviation of day-to-day stock price swings; higher volatility signals market uncertainty.
+        * **Debt-to-Equity (D/E)**: Leverage ratio measuring total debt relative to total shareholder equity; high debt increases risk of distress.
+        * **Operating Margin (EBIT Margin)**: The percentage of revenue remaining after subtracting operating expenses (COGS, SG&A, R&D); a key indicator of core profitability.
+        """)
+
+# ---------------------------------------------------------
+# TAB 5: COMPREHENSIVE GLOSSARY & FINANCIAL REFERENCE
+# ---------------------------------------------------------
+with tab_glossary:
+    st.header("📖 Comprehensive Financial, Valuation & AI Glossary")
+    st.caption("Plain-English definitions, mathematical formulas, investment banking rationale, and visual architecture diagrams for every concept across the platform.")
+
+    search_term = st.text_input("🔍 Quick Search Terms & Acronyms (e.g., 'WACC', 'Accretion', 'EBITDA', 'RAG'):", value="").strip().lower()
+
+    cat_choice = st.radio(
+        "Filter by Domain:",
+        ["All Domains", "📊 Valuation & Financial Modeling", "🤝 M&A Deal Modeling", "🔍 Agentic RAG & SEC Filings", "📈 Machine Learning & Statistics"],
+        horizontal=True
+    )
+
+    st.markdown("---")
+
+    # Domain 1: Valuation & DCF
+    if cat_choice in ["All Domains", "📊 Valuation & Financial Modeling"]:
+        st.subheader("📊 Valuation & Financial Modeling")
+        
+        dcf_img = ASSETS_DIR / "dcf_valuation_breakdown.jpg"
+        if dcf_img.exists():
+            st.image(str(dcf_img), caption="Figure 1: Complete Discounted Cash Flow (DCF) & Enterprise Valuation Framework", use_container_width=True)
+
+        with st.expander("🔹 Discounted Cash Flow (DCF) Valuation"):
+            st.markdown("""
+            * **Definition**: A core valuation methodology that determines the intrinsic dollar value of a company based on the present value of its projected future cash flows.
+            * **Why it matters**: While market prices reflect short-term trader sentiment, DCF measures intrinsic operating cash generation independent of hype.
+            * **Formula**:
+            $$\\text{DCF Value} = \\sum_{t=1}^n \\frac{\\text{FCF}_t}{(1 + \\text{WACC})^t} + \\frac{\\text{Terminal Value}}{(1 + \\text{WACC})^n}$$
+            * **Real-World Example**: If Apple projects $100B in cash flow annually for 4 years with an 8.5% WACC and a $2.5T terminal value, discounting these cash flows to the present yields Apple's intrinsic Enterprise Value.
+            """)
+
+        with st.expander("🔹 Free Cash Flow (FCF / Unlevered Free Cash Flow)"):
+            st.markdown("""
+            * **Definition**: The actual cash generated by business operations that is freely available to all capital providers (both lenders and shareholders) after paying operating expenses, taxes, and funding capital investments.
+            * **Formula**:
+            $$\\text{FCF} = \\text{EBIT}(1 - t) + \\text{D\\&A} - \\text{CapEx} - \\Delta\\text{NWC}$$
+            * **Why it matters**: Accounting Net Income includes non-cash items (like depreciation). Free Cash Flow represents real cash that can pay dividends, retire debt, or fund acquisitions.
+            """)
+
+        with st.expander("🔹 Weighted Average Cost of Capital (WACC)"):
+            st.markdown("""
+            * **Definition**: The average rate of return a company must pay to finance its operations, blended proportionally across its equity investors and debt lenders.
+            * **Formula**:
+            $$\\text{WACC} = \\left(\\frac{E}{V} \\times K_e\\right) + \\left(\\frac{D}{V} \\times K_d \\times (1 - t)\\right)$$
+            * **Where**: $E$ is Equity, $D$ is Debt, $V = E + D$, $K_e$ is Cost of Equity, $K_d$ is Cost of Debt, and $t$ is the corporate tax rate.
+            * **Role in deal.ml**: Serves as the discount rate to discount future cash flows back to today's dollar value.
+            """)
+
+        with st.expander("🔹 Terminal Value (Gordon Growth vs. Exit Multiple)"):
+            st.markdown("""
+            * **Definition**: The estimated value of all cash flows beyond the discrete projection period (Year 4+). In mature companies, Terminal Value accounts for 65% to 85% of total DCF value.
+            * **Gordon Growth (Perpetuity) Formula**:
+            $$\\text{TV}_{\\text{Gordon}} = \\frac{\\text{FCF}_n \\times (1 + g)}{\\text{WACC} - g}$$
+            *(where $g$ is long-term sustainable growth, typically 2.0% - 3.0%).*
+            * **Exit Multiple Formula**:
+            $$\\text{TV}_{\\text{Exit}} = \\text{Terminal EBITDA} \\times \\text{EV/EBITDA Multiple}$$
+            *(assumes the company is sold in Year 4 at current peer transaction multiples).*
+            """)
+
+        with st.expander("🔹 Enterprise Value (EV) vs. Equity Value"):
+            st.markdown("""
+            * **Enterprise Value (EV)**: The total economic value of the operating business, regardless of how it is financed (debt vs equity).
+            * **Equity Value (Market Cap)**: The value attributable specifically to common shareholders after satisfying debt obligations.
+            * **Bridge Formula**:
+            $$\\text{Enterprise Value} = \\text{Equity Value} + \\text{Total Debt} - \\text{Total Cash} = \\text{Equity Value} + \\text{Net Debt}$$
+            $$\\text{Implied Share Price} = \\frac{\\text{Equity Value}}{\\text{Diluted Shares Outstanding}}$$
+            """)
+
+        with st.expander("🔹 Comparable Company Analysis (Comps & Trading Multiples)"):
+            st.markdown("""
+            * **Definition**: A relative valuation technique that values a target business by benchmarking it against peer companies trading publicly in the stock market.
+            * **Key Multiples**:
+              * **EV/EBITDA**: Normalizes for differences in capital structure and tax rates.
+              * **P/E (Price-to-Earnings)**: Market price per share divided by net income per share.
+            """)
+
+        with st.expander("🔹 Valuation Football Field Chart"):
+            st.markdown("""
+            * **Definition**: An investment banking bar chart displaying side-by-side valuation ranges from different methodologies (DCF Gordon Growth, DCF Exit Multiples, 52-Week Range, Comps).
+            * **Why it matters**: Gives M&A negotiators and corporate boards a clear visual fair value corridor to anchor transaction pricing.
+            """)
+
+    # Domain 2: M&A Deal Modeling
+    if cat_choice in ["All Domains", "🤝 M&A Deal Modeling"]:
+        st.subheader("🤝 M&A Deal Modeling & Accretion/Dilution")
+        
+        ma_img = ASSETS_DIR / "ma_accretion_dilution.jpg"
+        if ma_img.exists():
+            st.image(str(ma_img), caption="Figure 2: M&A Accretion / Dilution Analysis & Pro-Forma EPS Architecture", use_container_width=True)
+
+        with st.expander("🔹 Accretion vs. Dilution Analysis"):
+            st.markdown("""
+            * **Accretive Deal (Green)**: The acquisition increases the buyer's Earnings Per Share (EPS). The market generally responds favorably.
+            * **Dilutive Deal (Red)**: The acquisition reduces the buyer's EPS, meaning earnings per share decrease post-closing.
+            * **Rule of Thumb**:
+              * If an acquirer buys a target with a lower P/E ratio using stock, the transaction is naturally **Accretive**.
+              * If an acquirer buys a target with a higher P/E ratio, it is **Dilutive** unless sufficient synergies are realized.
+            """)
+
+        with st.expander("🔹 Pro-Forma EPS vs. Standalone EPS"):
+            st.markdown("""
+            * **Standalone EPS**: Current earnings per share of the buyer before the merger.
+            $$\\text{EPS}_{\\text{standalone}} = \\frac{\\text{Acquirer Net Income}}{\\text{Acquirer Shares}}$$
+            * **Pro-Forma EPS**: Projected earnings per share of the newly combined entity.
+            $$\\text{EPS}_{\\text{pro-forma}} = \\frac{\\text{Acq Net Income} + \\text{Tgt Net Income} + \\text{Synergies}(1-t) - \\text{Deal Interest}(1-t)}{\\text{Acq Shares} + \\text{New Shares Issued}}$$
+            """)
+
+        with st.expander("🔹 Offer Premium (%) & Deal Value"):
+            st.markdown("""
+            * **Offer Price per Share**: Target's current share price plus a negotiated premium percentage (typically 20% to 40%).
+            * **Deal Value**: Total equity purchase price paid for 100% of target shares.
+            $$\\text{Offer Price} = \\text{Target Share Price} \\times (1 + \\text{Premium})$$
+            $$\\text{Total Deal Value} = \\text{Offer Price} \\times \\text{Target Shares Outstanding}$$
+            """)
+
+        with st.expander("🔹 Synergies (Cost vs. Revenue)"):
+            st.markdown("""
+            * **Cost Synergies (Hard Synergies)**: Direct cost savings from eliminating redundant corporate overhead, consolidating headquarters, software licenses, and combining supply chains.
+            * **Revenue Synergies (Soft Synergies)**: Additional sales achieved by cross-selling products into the target's customer base or international distribution channels.
+            * **Tax Effect**: Synergies boost taxable income, so net benefit is calculated after-tax: $\\text{Pre-Tax Synergies} \\times (1 - t)$.
+            """)
+
+        with st.expander("🔹 Financing Consideration (Cash vs. Stock)"):
+            st.markdown("""
+            * **Cash Consideration**: Funded through cash on hand or new debt borrowing. Incurs an annual after-tax interest expense:
+            $$\\text{After-Tax Interest} = (\\text{Cash Needed} \\times \\text{Interest Rate}) \\times (1 - t)$$
+            * **Stock Consideration**: Acquirer prints and issues brand new shares to target owners:
+            $$\\text{New Shares Issued} = \\frac{\\text{Stock Consideration Value}}{\\text{Acquirer Share Price}}$$
+            * Avoids borrowing costs but dilutes existing shareholders.
+            """)
+
+    # Domain 3: Agentic RAG & SEC Ingestion
+    if cat_choice in ["All Domains", "🔍 Agentic RAG & SEC Filings"]:
+        st.subheader("🔍 Agentic RAG & SEC Document Ingestion")
+        
+        rag_img = ASSETS_DIR / "hybrid_rag_architecture.jpg"
+        if rag_img.exists():
+            st.image(str(rag_img), caption="Figure 3: Agentic Hybrid RAG Pipeline for SEC Disclosures & Document Citations", use_container_width=True)
+
+        with st.expander("🔹 Agentic RAG (Retrieval-Augmented Generation)"):
+            st.markdown("""
+            * **Definition**: An AI architecture that routes financial queries through specialized retrieval pipelines, pulls verbatim clauses from raw SEC filings, and grounds responses with verified footnote citations.
+            * **Zero Hallucination**: Prevents LLMs from fabricating numbers by forcing strict citations against verified regulatory documents.
+            """)
+
+        with st.expander("🔹 Hybrid Search (Dense Vectors + Sparse BM25)"):
+            st.markdown("""
+            * **Dense Vector Search (ChromaDB)**: Encodes text into 384-dimensional mathematical embeddings to capture conceptual meaning (e.g., searching "legal troubles" finds "antitrust investigation").
+            * **Sparse Keyword Search (BM25Okapi)**: Exact statistical term matching that excels at finding precise corporate tickers, dollar values, contract clauses, and specific filing sections.
+            * **Reciprocal Rank Fusion (RRF)**: Merges the top results from dense and sparse search into a single unified relevance ranking:
+            $$\\text{RRF Score}(d) = \\sum_{m \\in M} \\frac{1}{60 + \\text{rank}_m(d)}$$
+            """)
+
+        with st.expander("🔹 SEC Form 10-K & 10-Q Filings"):
+            st.markdown("""
+            * **Form 10-K**: Annual comprehensive audited report filed with the SEC by publicly traded companies.
+            * **Form 10-Q**: Quarterly unaudited financial update filed for Q1, Q2, and Q3.
+            * **Item 1A (Risk Factors)**: Mandatory section outlining critical external and internal vulnerabilities (cybersecurity, regulatory changes, currency volatility, vendor dependency).
+            * **Item 7 (MD&A)**: Management's Discussion and Analysis; executive commentary explaining year-over-year revenue, margins, and operational strategy.
+            """)
+
+        with st.expander("🔹 Table-Aware HTML Parser"):
+            st.markdown("""
+            * **Definition**: Specialized ingestion parser that detects HTML `<table>` tags in SEC filings and preserves complete tabular structures as Markdown tables.
+            * **Why it matters**: Standard chunking cuts financial statements in half, breaking balance sheets. Table-aware chunking preserves accounting integrity.
+            """)
+
+    # Domain 4: Machine Learning & Statistics
+    if cat_choice in ["All Domains", "📈 Machine Learning & Statistics"]:
+        st.subheader("📈 Predictive Machine Learning & Statistics")
+
+        with st.expander("🔹 XGBoost (Extreme Gradient Boosting) Regressor"):
+            st.markdown("""
+            * **Definition**: An optimized distributed gradient boosting library that iteratively builds decision trees to minimize prediction errors on tabular financial data.
+            * **Role in deal.ml**: Predicts forward 1-year revenue growth rates and EBITDA margins based on historical CAGR, market volatility, leverage, and margin profiles.
+            """)
+
+        with st.expander("🔹 30-Day Realized Stock Volatility"):
+            st.markdown("""
+            * **Definition**: The annualized standard deviation of daily stock returns over the previous 30 trading days:
+            $$\\sigma = \\sqrt{\\frac{1}{N-1}\\sum_{i=1}^N (R_i - \\bar{R})^2} \\times \\sqrt{252}$$
+            * **Interpretation**: High volatility signals high market uncertainty, which raises a company's required cost of capital (WACC) and compresses valuation multiples.
+            """)
+
+        with st.expander("🔹 Debt-to-Equity (D/E) Ratio"):
+            st.markdown("""
+            * **Definition**: Total financial debt divided by total shareholders' equity.
+            * **Interpretation**: A measure of financial leverage. High debt-to-equity ratios indicate greater financial risk and sensitivity to rising interest rates.
+            """)
+
+        with st.expander("🔹 Operating Margin (EBIT Margin)"):
+            st.markdown("""
+            * **Definition**: Operating income (EBIT) divided by total revenue.
+            * **Interpretation**: Demonstrates core operational profitability before interest expenses and taxes. High operating margins reflect pricing power and competitive moat.
+            """)
+
+        with st.expander("🔹 Machine Learning Evaluation Metrics (MSE, RMSE, MAE, R²)"):
+            st.markdown("""
+            * **MSE (Mean Squared Error)**: Average squared distance between predictions and actuals.
+            * **RMSE (Root Mean Squared Error)**: Square root of MSE; measures typical error magnitude in original percentage units.
+            * **MAE (Mean Absolute Error)**: Average absolute magnitude of forecast errors.
+            * **$R^2$ (Coefficient of Determination)**: Proportion of variance in target financial metrics explained by the model ($1.0$ is perfect correlation; `deal.ml` achieves $>0.99$).
+            """)
+

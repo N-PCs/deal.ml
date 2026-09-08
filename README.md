@@ -1,4 +1,4 @@
-# 🏛️ deal.ml | Agentic RAG & Predictive ML System for Automated M&A Due Diligence & Valuation
+# deal.ml | Agentic RAG & Predictive ML System for Automated M&A Due Diligence & Valuation
 
 > **An Enterprise Financial Machine Learning & RAG Platform for Global Investment Banking Analysts.**
 
@@ -15,7 +15,7 @@
 
 ---
 
-## 📌 Executive Summary
+## Executive Summary
 
 Investment bankers at top-tier financial institutions evaluate corporate acquisitions, build financial valuation models (DCF and Comps), and execute due diligence on public and private companies. Raw Large Language Models (LLMs) fail at financial modeling because LLMs hallucinate calculations and struggle with tabular accounting statements.
 
@@ -23,7 +23,7 @@ Investment bankers at top-tier financial institutions evaluate corporate acquisi
 
 ---
 
-## 🏗️ System Architecture & Workflow
+## System Architecture & Workflow
 
 ```mermaid
 flowchart TD
@@ -80,7 +80,7 @@ flowchart TD
 
 ---
 
-## 📁 1. Core Financial Data Files
+## 1. Core Financial Data Files
 
 | Data Source | Format | Purpose | Extraction Strategy |
 | :--- | :--- | :--- | :--- |
@@ -91,7 +91,7 @@ flowchart TD
 
 ---
 
-## 💻 2. Technology Stack
+## 2. Technology Stack
 
 - **Language**: 100% Python 3.10 (Zero R code)
 - **Mathematical Execution**: Pure Python NumPy / Pandas (Deterministic, Audit-proof)
@@ -103,7 +103,7 @@ flowchart TD
 
 ---
 
-## 🚀 3. Quick Start & Execution
+## 3. Quick Start & Execution
 
 ### Prerequisites
 - Python 3.10+

@@ -1,4 +1,4 @@
-# 📊 deal.ml | System Architecture & Benchmarks
+# deal.ml | System Architecture & Benchmarks
 
 This document outlines the architecture of the **Hybrid RAG & ML Forecaster** system and details its performance statistics, visualized with charts and graphs.
 
@@ -8,7 +8,7 @@ This document outlines the architecture of the **Hybrid RAG & ML Forecaster** sy
 
 ---
 
-## 🏗️ 1. Architecture Overview
+## 1. Architecture Overview
 
 ```mermaid
 graph TD
@@ -17,7 +17,7 @@ graph TD
         B[Earnings Transcripts] --> |Chunking| C
         M[Market Data/Fundamentals] --> N(ML XGBoost Forecaster)
     end
-    
+
     subgraph Core Engines
         C --> |Dense Embeddings| D[(ChromaDB Vector Store)]
         C --> |Sparse Keywords| E[(BM25 Index)]
@@ -25,7 +25,7 @@ graph TD
         E --> F
         N --> |Historical Growth, Volatility| O[Predictive Regressor]
     end
-    
+
     subgraph Output
         F --> G[Ranked Financial Context]
         O --> P[Predicted Forward Growth & Margins]
@@ -33,15 +33,29 @@ graph TD
         P --> H
         H --> Z[Streamlit Financial Terminal]
     end
+
+    %% Bright Pastel & Neon Styling for Maximum Contrast
+    style A fill:#E3F2FD,stroke:#2196F3,stroke-width:2px,color:#0D47A1
+    style B fill:#E3F2FD,stroke:#2196F3,stroke-width:2px,color:#0D47A1
+    style M fill:#E8F5E9,stroke:#4CAF50,stroke-width:2px,color:#1B5E20
     
-    style C fill:#00E5FF,stroke:#00B4D8,color:#0B0F19
-    style N fill:#FF007F,stroke:#E60070,color:#FFFFFF
-    style Z fill:#FFE600,stroke:#E6C200,color:#111827
+    style C fill:#00E5FF,stroke:#00B4D8,stroke-width:2px,color:#0B0F19
+    style D fill:#FFF3E0,stroke:#FF9800,stroke-width:2px,color:#E65100
+    style E fill:#FFF3E0,stroke:#FF9800,stroke-width:2px,color:#E65100
+    style F fill:#F3E5F5,stroke:#9C27B0,stroke-width:2px,color:#4A148C
+    style N fill:#FF007F,stroke:#E60070,stroke-width:2px,color:#FFFFFF
+    style O fill:#FCE4EC,stroke:#E91E63,stroke-width:2px,color:#880E4F
+
+    style G fill:#E0F7FA,stroke:#00BCD4,stroke-width:2px,color:#006064
+    style P fill:#E0F2F1,stroke:#009688,stroke-width:2px,color:#004D40
+    style H fill:#E1BEE7,stroke:#8E24AA,stroke-width:2px,color:#4A148C
+    style Z fill:#FFE600,stroke:#E6C200,stroke-width:2px,color:#111827
+
 ```
 
 ---
 
-## 📈 2. ML Engine Performance Statistics (Regression)
+## 2. ML Engine Performance Statistics (Regression)
 
 Based on real-time execution of the synthetic financial dataset generator (1,000 simulated M&A data points), the XGBoost Regressor yields the following baseline performance:
 
@@ -72,7 +86,7 @@ xychart-beta
 
 ---
 
-## 🔍 3. RAG Engine Benchmarks (Information Retrieval)
+## 3. RAG Engine Benchmarks (Information Retrieval)
 
 When testing the `FinancialHybridRetriever` on a simulated batch of SEC filings and earnings transcripts, the hybrid pipeline yields the following real-time performance stats:
 
@@ -84,7 +98,8 @@ When testing the `FinancialHybridRetriever` on a simulated batch of SEC filings 
 
 ### Retrieval Accuracy (Precision@K Distribution)
 ```mermaid
-pie title "RAG Retrieval Hit Rate (100 Financial Queries)"
+%%{init: { 'theme': 'base', 'themeVariables': { 'pie1': '#00E5FF', 'pie2': '#FF007F', 'pie3': '#FFE600', 'pie4': '#FF9800', 'pie5': '#4CAF50' }}}%%
+pie title RAG Retrieval Hit Rate (100 Financial Queries)
     "Top 1 Hit (Found instantly)" : 75
     "Top 3 Hit (Found in top 3)" : 17
     "Top 5 Hit (Found in top 5)" : 5
